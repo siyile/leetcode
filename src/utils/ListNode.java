@@ -9,7 +9,8 @@ public class ListNode {
     public String toString() {
         ListNode p = this;
         StringBuilder s = new StringBuilder();
-        while (p.next != null){
+        int count = 0;
+        while (p.next != null && count++ < 10){
             s.append(p.val);
             s.append("->");
             p = p.next;
