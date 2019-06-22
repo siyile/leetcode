@@ -1,3 +1,5 @@
+package UpTo150;
+
 public class Problem130 {
     public void solve(char[][] board) {
         int m = board.length;

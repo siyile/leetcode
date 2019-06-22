@@ -1,3 +1,5 @@
+package UpTo150;
+
 public class Problem125 {
     public boolean isPalindrome(String s) {
         int right = s.length() - 1;

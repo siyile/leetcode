@@ -1,3 +1,5 @@
+package UpTo150;
+
 public class Problem123 {
     public int maxProfit(int[] prices) {
         if (prices.length == 0) return 0;

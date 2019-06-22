@@ -1,3 +1,5 @@
+package UpTo150;
+
 import java.util.stream.IntStream;
 
 public class Problem132 {

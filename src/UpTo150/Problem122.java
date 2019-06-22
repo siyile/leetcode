@@ -1,3 +1,5 @@
+package UpTo150;
+
 public class Problem122 {
     public int maxProfit(int[] prices) {
         int profit = 0;
