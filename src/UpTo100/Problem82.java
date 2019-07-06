@@ -5,15 +5,25 @@ import utils.ListNode;
 
 public class Problem82 {
     public ListNode deleteDuplicates(ListNode head) {
-        if (head == null) return null;
-        ListNode target, p, q;
-        p = head;
-        if (p.next != null && p.val == p.next.val) {
-            while (p.next != null && p.val == p.next.val) {
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+
+        ListNode p = dummy;
+        int prev = 0;
+        boolean change = false;
+        while (p.next != null && p.next.next != null) {
+            if (p.next.val == p.next.next.val) {
+                prev = p.next.val;
+            }
+            while (p.next != null && p.next.val == prev) {
+                p.next = p.next.next;
+                change = true;
+            }
+            if (!change) {
                 p = p.next;
             }
         }
-        return null;
+        return dummy.next;
     }
 
     public static void main(String[] args) {

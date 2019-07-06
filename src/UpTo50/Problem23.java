@@ -8,6 +8,38 @@ import java.util.PriorityQueue;
 
 public class Problem23 {
     public ListNode mergeKLists(ListNode[] lists) {
+        for (int j = 1; j < lists.length; j <<= 1) {
+            for (int i = 0; i < lists.length - j; i += j * 2) {
+                lists[i] = merge(lists[i], lists[i + j]);
+            }
+        }
+        return lists[0];
+    }
+
+    public ListNode merge(ListNode l1, ListNode l2) {
+        ListNode dummy = new ListNode(0);
+        ListNode p = dummy;
+        while (l1 != null && l2 != null) {
+            if (l1.val < l2.val) {
+                p.next = l1;
+                l1 = l1.next;
+            } else {
+                p.next = l2;
+                l2 = l2.next;
+            }
+            p = p.next;
+        }
+        if (l1 != null) {
+            p.next = l1;
+        } else {
+            p.next = l2;
+        }
+
+        return dummy.next;
+    }
+
+
+    public ListNode mergeKLists4(ListNode[] lists) {
         int len = lists.length;
         if (len == 0) {
             return null;
@@ -36,7 +68,7 @@ public class Problem23 {
         }
         ListNode p = lists[s];
         lists[s] = p.next;
-        p.next = mergeKLists(lists);
+        p.next = mergeKLists4(lists);
         return p;
     }
 
@@ -126,7 +158,7 @@ public class Problem23 {
         LinkedList l1 = new LinkedList(a);
         LinkedList l2 = new LinkedList(b);
         LinkedList l3 = new LinkedList(c);
-        System.out.println(p.mergeKLists3(new ListNode[]{l1.head, l2.head, l3.head}));
+        System.out.println(p.mergeKLists(new ListNode[]{l1.head, l2.head, l3.head}));
     }
 }
 

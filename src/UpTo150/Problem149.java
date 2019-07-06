@@ -5,7 +5,7 @@ import javafx.util.Pair;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Problen149 {
+public class Problem149 {
     Map<Pair<Integer, Integer>, Integer> lines = new HashMap<>();
     public Pair<Integer, Integer> check(int[][] points, int i, int j, int duplicates) {
         int x1 = points[i][0];
@@ -55,7 +55,7 @@ public class Problen149 {
     }
 
     public static void main(String[] args) {
-        Problen149 p = new Problen149();
+        Problem149 p = new Problem149();
         System.out.println(p.maxPoints(new int[][]{{0,0},{1,1},{0,0}}));
     }
 }
