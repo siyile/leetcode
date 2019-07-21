@@ -1,7 +1,7 @@
 package UpTo50;
 
 public class Problem50 {
-    public double myPow(double x, int n) {
+    public double myPow2(double x, int n) {
         if (n == 0) return 1;
         if (x == 0) return 0;
         double ans = 1;
@@ -42,6 +42,14 @@ public class Problem50 {
             base *= base;
         }
         return ans;
+    }
+
+    public double myPow(double x, int n) {
+        if (n == 0) return 1;
+        double tmp = myPow(x * x, n / 2);
+        if (n % 2 == 1)
+            return x * tmp * tmp;
+        else return tmp * tmp;
     }
 
     public static void main(String[] args) {
