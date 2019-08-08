@@ -6,15 +6,15 @@ import java.util.List;
 public class Problem253 {
     public int minMeetingRooms(int[][] intervals) {
         if (intervals.length == 0) return 0;
-        List<Interval> a = new ArrayList<>();
+        List<Peroid> a = new ArrayList<>();
         for (int[] interval :
                 intervals) {
-            a.add(new Interval(interval[0], interval[1]));
+            a.add(new Peroid(interval[0], interval[1]));
         }
 
-        Collections.sort(a, new Comparator<Interval>() {
+        Collections.sort(a, new Comparator<Peroid>() {
             @Override
-            public int compare(Interval o1, Interval o2) {
+            public int compare(Peroid o1, Peroid o2) {
                 return o1.end - o2.end;
             }
         });
@@ -23,9 +23,9 @@ public class Problem253 {
 
         while (!a.isEmpty()) {
             cnt++;
-            List<Interval> tmp = new ArrayList<>();
+            List<Peroid> tmp = new ArrayList<>();
             int end = 0;
-            for (Interval x :
+            for (Peroid x :
                     a) {
                 if (x.start < end) {
                     tmp.add(x);
@@ -36,11 +36,11 @@ public class Problem253 {
         return cnt;
     }
 
-    class Interval {
+    class Peroid {
         int start;
         int end;
 
-        public Interval(int start, int end) {
+        public Peroid(int start, int end) {
             this.start = start;
             this.end = end;
         }

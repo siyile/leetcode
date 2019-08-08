@@ -4,20 +4,20 @@ import java.util.Queue;
 
 public class Problem435 {
     public int eraseOverlapIntervals(int[][] intervals) {
-        Queue<Interval> q = new PriorityQueue<>(new Comparator<Interval>() {
+        Queue<Period> q = new PriorityQueue<>(new Comparator<Period>() {
             @Override
-            public int compare(Interval o1, Interval o2) {
+            public int compare(Period o1, Period o2) {
                 return o1.end - o2.end;
             }
         });
         for (int[] interval :
                 intervals) {
-            q.add(new Interval(interval[0], interval[1]));
+            q.add(new Period(interval[0], interval[1]));
         }
         int cnt = 1;
         int end = q.poll().end;
         while (!q.isEmpty()) {
-            Interval cur = q.poll();
+            Period cur = q.poll();
             if (cur.start >= end) {
                 end = cur.end;
                 cnt++;
@@ -26,11 +26,11 @@ public class Problem435 {
         return intervals.length - cnt;
     }
 
-    class Interval {
+    class Period {
         int start;
         int end;
 
-        public Interval(int start, int end) {
+        public Period(int start, int end) {
             this.start = start;
             this.end = end;
         }
