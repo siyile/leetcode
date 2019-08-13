@@ -4,7 +4,7 @@ import java.util.List;
 public class Problem923 {
     public int threeSumMulti(int[] A, int target) {
         long ans = 0;
-        int[] cnt = new int[101];
+        long[] cnt = new long[101];
         List<Integer> nums = new ArrayList<>();
         for (int x :
                 A) {
@@ -33,8 +33,8 @@ public class Problem923 {
                 ans += cnt[x] * (cnt[x] - 1) * (cnt[x] - 2) / 6;
             } else if (cnt[x] > 1) {
                 int y = target - 2 * x;
-                if (y >= 0 && y < 101 && cnt[y] > 0)
-                    ans += cnt[y] * cnt[x] * (cnt[x] - 1);
+                if (x != y && y >= 0 && y < 101 && cnt[y] > 0)
+                    ans += cnt[y] * cnt[x] * (cnt[x] - 1) / 2;
             }
         }
 
