@@ -4,25 +4,20 @@ import utils.ListNode;
 
 public class Problem142 {
     public ListNode detectCycle(ListNode head) {
-        if (head == null && head.next == null) return null;
-        ListNode fast = head.next;
-        ListNode slow = head;
-        boolean cycle = true;
-        if (fast == null) return null;
-        while (fast.next != null && fast.next.next != null) {
-            if (slow == fast) {
-                cycle = false;
+        if (head == null) return null;
+        ListNode p = head, q = head;
+        while (q != null && q.next != null) {
+            p = p.next;
+            q = q.next.next;
+            if (p == q)
                 break;
-            }
-            fast = fast.next.next;
-            slow = slow.next;
         }
-        if (cycle) return null;
-        slow = head;
-        while (slow != fast) {
-            slow = slow.next;
-            fast = fast.next;
+        if (q == null || q.next == null) return null;
+        q = head;
+        while (p != q) {
+            p = p.next;
+            q = q.next;
         }
-        return slow;
+        return p;
     }
 }

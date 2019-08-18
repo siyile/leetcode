@@ -4,40 +4,35 @@ import utils.ListNode;
 
 public class Problem143 {
     public void reorderList(ListNode head) {
-        if (head == null || head.next == null) return;
-
-        // step 1: find the middle
-        ListNode fast = head;
-        ListNode slow = head;
-        while (fast.next != null && fast.next.next != null) {
-            fast = fast.next.next;
-            slow = slow.next;
+        if (head == null) return;
+        // find middle
+        ListNode p = head, q = head;
+        while (q.next != null && q.next.next != null) {
+            q = q.next.next;
+            p = p.next;
         }
+        q = p.next;
+        p.next = null;
 
-        // step 2: reverse later half
-        ListNode preMiddle = slow;
-        ListNode cur = slow.next;
-        while (cur.next != null) {
-            ListNode tail = cur.next;
-            cur.next = tail.next;
-            tail.next = preMiddle.next;
-            preMiddle.next = tail;
-        }
+        // reverse
+        q = reverse(q);
 
-        ListNode temp = head;
-        while (temp != null) {
-            System.out.println(temp.val);
-            temp = temp.next;
+        // insert
+        p = head;
+        while (q != null) {
+            ListNode r = q.next;
+            q.next = p.next;
+            p.next = q;
+            p = q.next;
+            q = r;
         }
+    }
 
-        cur = head;
-        // step 3: reorder
-        while (preMiddle != cur) {
-            ListNode node = preMiddle.next;
-            preMiddle.next = node.next;
-            node.next = cur.next;
-            cur.next = node;
-            cur = node.next;
-        }
+    private ListNode reverse(ListNode head) {
+        if (head == null || head.next == null) return head;
+        ListNode p = reverse(head.next);
+        head.next.next = head;
+        head.next = null;
+        return p;
     }
 }

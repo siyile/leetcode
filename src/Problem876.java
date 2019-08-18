@@ -2,13 +2,13 @@ import utils.ListNode;
 
 public class Problem876 {
     public ListNode middleNode(ListNode head) {
-        if (head == null) return null;
-        ListNode slow = head, fast = head;
-        while (fast != null && fast.next != null) {
-            fast = fast.next.next;
-            slow = slow.next;
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode p = dummy, q = p;
+        while (q.next != null && q.next.next != null) {
+            p = p.next;
+            q = q.next.next;
         }
-        return slow;
+        return p.next;
     }
-
 }

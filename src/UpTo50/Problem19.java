@@ -4,15 +4,13 @@ import utils.ListNode;
 
 public class Problem19 {
     public ListNode removeNthFromEnd(ListNode head, int n) {
-        ListNode fast, slow;
         ListNode dummy = new ListNode(0);
         dummy.next = head;
-        slow = dummy;
-        fast = head;
+        ListNode slow = dummy, fast = slow;
         for (int i = 0; i < n; i++) {
             fast = fast.next;
         }
-        while (fast != null) {
+        while (fast.next != null) {
             fast = fast.next;
             slow = slow.next;
         }

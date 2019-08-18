@@ -1,13 +1,13 @@
 public class Problem707 {
     /** Initialize your data structure here. */
     class MyLinkedList {
-        ListNode head;
-        ListNode tail;
+        Node head;
+        Node tail;
         int len;
 
         public MyLinkedList() {
-            head = new ListNode(0);
-            tail = new ListNode(0);
+            head = new Node(0);
+            tail = new Node(0);
             head.next = tail;
             tail.prev = head;
             len = 0;
@@ -18,7 +18,7 @@ public class Problem707 {
          */
         public int get(int index) {
             if (index > len) return -1;
-            ListNode p;
+            Node p;
             if (index < len / 2) {
                 p = head;
                 for (int i = 0; i < index + 1; i++) {
@@ -37,7 +37,7 @@ public class Problem707 {
          * Add a node of value val before the first element of the linked list. After the insertion, the new node will be the first node of the linked list.
          */
         public void addAtHead(int val) {
-            ListNode p = new ListNode(val);
+            Node p = new Node(val);
             head.next.prev = p;
             p.next = head.next;
             p.prev = head;
@@ -49,7 +49,7 @@ public class Problem707 {
          * Append a node of value val to the last element of the linked list.
          */
         public void addAtTail(int val) {
-            ListNode p = new ListNode(val);
+            Node p = new Node(val);
             tail.prev.next = p;
             p.prev = tail.prev;
             tail.prev = p;
@@ -66,8 +66,8 @@ public class Problem707 {
                 addAtHead(val);
                 return;
             }
-            ListNode p;
-            ListNode q = new ListNode(val);
+            Node p;
+            Node q = new Node(val);
             if (index < len / 2) {
                 p = head;
                 for (int i = 0; i < index + 1; i++) {
@@ -92,7 +92,7 @@ public class Problem707 {
          */
         public void deleteAtIndex(int index) {
             if (index >= len || index < 0) return;
-            ListNode p;
+            Node p;
             if (index < len / 2) {
                 p = head;
                 for (int i = 0; i < index + 1; i++) {
@@ -108,12 +108,12 @@ public class Problem707 {
             p.next.prev = p.prev;
         }
 
-        class ListNode {
-            ListNode prev;
-            ListNode next;
+        class Node {
+            Node prev;
+            Node next;
             int val;
 
-            ListNode(int v) {
+            Node(int v) {
                 val = v;
             }
         }

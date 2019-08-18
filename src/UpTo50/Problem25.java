@@ -4,54 +4,35 @@ import utils.LinkedList;
 import utils.ListNode;
 
 public class Problem25 {
+    public static void main(String[] args) {
+        Problem25 p = new Problem25();
+        int[] a = {1, 2, 3, 4, 5};
+        LinkedList l1 = new LinkedList(a);
+        System.out.println(p.reverseKGroup(l1.head, 2));
+    }
+
     public ListNode reverseKGroup(ListNode head, int k) {
+        if (k == 1 || head == null || head.next == null) return head;
         ListNode dummy = new ListNode(0);
         dummy.next = head;
-        ListNode res = dummy;
-        ListNode start, end;
-        ListNode [] result;
-        while (true){
-            result = reverseKNode(dummy, k);
-            start = result[0];
-            end = result[1];
-            if (end == null) {
-                dummy.next = start;
-                return res.next;
+        ListNode p = dummy;
+        while (p.next != null) {
+            ListNode tmp = p.next;
+            for (int i = 0; i < k; i++) {
+                if (tmp == null)
+                    return dummy.next;
+                else tmp = tmp.next;
             }
-            else {
-                dummy.next = start;
-                dummy = end;
+            ListNode front = p.next;
+            ListNode q = front.next;
+            for (int i = 0; i < k - 1 && q != null; i++) {
+                front.next = q.next;
+                q.next = p.next;
+                p.next = q;
+                q = front.next;
             }
+            p = front;
         }
-    }
-
-    public ListNode[] reverseKNode(ListNode head, int k) {
-        ListNode p = head;
-        for (int i = 0; i < k; i++){
-            if (p.next == null) {
-                return new ListNode[] { head.next, null };
-            }
-            p = p.next;
-        }
-        ListNode dummy = new ListNode(0);
-        head = head.next;
-        ListNode end = head;
-        dummy.next = p.next;
-        ListNode q;
-        for (int i = 0; i < k; i++){
-            p = dummy.next;
-            dummy.next = head;
-            q = head.next;
-            head.next = p;
-            head = q;
-        }
-        return new ListNode[] {dummy.next, end};
-    }
-
-    public static void main(String [] args){
-        Problem25 p = new Problem25();
-        int [] a = {1,2};
-        LinkedList l1 = new LinkedList(a);
-        System.out.println(p.reverseKGroup(l1.head, 3));
+        return dummy.next;
     }
 }

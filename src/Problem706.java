@@ -1,88 +1,80 @@
 public class Problem706 {
-    class MyHashMap {
-        int HASH_KEY = 10000;
+    private class MyHashMap {
+
+        int HASH_KEY;
         Node[] map;
 
         /**
          * Initialize your data structure here.
          */
         public MyHashMap() {
+            HASH_KEY = 10000;
             map = new Node[HASH_KEY];
         }
 
-        /**
-         * value will always be non-negative.
-         */
+        /** value will always be non-negative. */
         public void put(int key, int value) {
-            Node p = map[hashcode(key)];
-            if (p == null) {
-                map[hashcode(key)] = new Node(key, value);
+            int hash_key = key % HASH_KEY;
+            if (map[hash_key] == null) {
+                Node node = new Node(key, value);
+                map[hash_key] = node;
             } else {
-                while (p.next != null && p.key != key) {
-                    p = p.next;
+                Node node = new Node(-1, 0);
+                node.next = map[hash_key];
+                while (node.next != null) {
+                    node = node.next;
+                    if (node.key == key) {
+                        node.val = value;
+                        return;
+                    }
                 }
-                if (p.key == key) {
-                    p.value = value;
-                } else {
-                    p.next = new Node(key, value);
-                }
+                node.next = new Node(key, value);
             }
         }
 
-        /**
-         * Returns the value to which the specified key is mapped, or -1 if this map contains no mapping for the key
-         */
+        /** Returns the value to which the specified key is mapped, or -1 if this map contains no mapping for the key */
         public int get(int key) {
-            Node p = map[hashcode(key)];
-            if (p == null) {
-                return -1;
-            } else {
-                while (p != null && p.key != key) {
-                    p = p.next;
-                }
-                if (p != null) {
-                    return p.value;
-                } else {
-                    return -1;
+            int hash_key = key % HASH_KEY;
+            if (map[hash_key] != null) {
+                Node node = new Node(-1, 0);
+                node.next = map[hash_key];
+                while (node.next != null) {
+                    node = node.next;
+                    if (node.key == key) {
+                        return node.val;
+                    }
                 }
             }
+            return -1;
         }
 
-        /**
-         * Removes the mapping of the specified value key if this map contains a mapping for the key
-         */
+        /** Removes the mapping of the specified value key if this map contains a mapping for the key */
         public void remove(int key) {
-            int hashKey = hashcode(key);
-            if (map[hashKey] != null) {
-                Node p = map[hashKey];
-                Node dummy = new Node(0, 0);
-                dummy.next = p;
-                Node prev = dummy;
-                while (p != null && p.key != key) {
-                    p = p.next;
-                    prev = prev.next;
+            int hash_key = key % HASH_KEY;
+            if (map[hash_key] != null) {
+                Node dummy = new Node(-1, 0);
+                dummy.next = map[hash_key];
+                Node node = dummy;
+                while (node.next != null) {
+                    if (node.next.key == key) {
+                        node.next = node.next.next;
+                        break;
+                    }
+                    node = node.next;
                 }
-                if (p != null) {
-                    prev.next = p.next;
-                    map[hashKey] = dummy.next;
-                }
+                map[hash_key] = dummy.next;
             }
-        }
-
-        public int hashcode(int key) {
-            return key % HASH_KEY;
         }
 
         class Node {
             int key;
-            int value;
+            int val;
             Node next;
 
-            Node(int key, int value) {
+            public Node(int key, int val) {
                 this.key = key;
-                this.value = value;
+                this.val = val;
             }
         }
     }
-
 }

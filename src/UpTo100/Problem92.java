@@ -5,23 +5,20 @@ import utils.ListNode;
 
 public class Problem92 {
     public ListNode reverseBetween(ListNode head, int m, int n) {
-        if (m == n) return head;
         ListNode dummy = new ListNode(0);
         dummy.next = head;
         ListNode p = dummy;
         for (int i = 0; i < m - 1; i++) {
             p = p.next;
         }
-        ListNode q, r;
-        q = p.next;
-        ListNode s = q;
-        for (int i = 0; i < n - m + 1; i++) {
-            r = q.next;
-            q.next = p.next;
-            p.next = q;
-            q = r;
+        ListNode q = p.next, front = q.next;
+        for (int i = 0; i < n - m; i++) {
+            q.next = front.next;
+            front.next = p.next;
+            p.next = front;
+            front = q.next;
         }
-        s.next = q;
+
         return dummy.next;
     }
 

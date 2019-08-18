@@ -1,68 +1,67 @@
 package UpTo150;
 
-import utils.BinaryTree;
 import utils.LinkedList;
 import utils.ListNode;
 
 public class Problem148 {
+    public static void main(String[] args) {
+        Problem148 p = new Problem148();
+        LinkedList t = new LinkedList(new int[]{1, -1, 2});
+        System.out.println(p.sortList(t.head));
+    }
+
     public ListNode sortList(ListNode head) {
-        if (head == null || head.next == null) return head;
-        int len = 0;
         ListNode dummy = new ListNode(0);
         dummy.next = head;
-        ListNode p = dummy;
-        while (p.next != null) {
-            len++;
+        // get length
+        int n = 0;
+        ListNode p = head;
+        while (p != null) {
             p = p.next;
+            n++;
         }
 
-        ListNode firstTracker, secondTracker, firstHead, secondHead, prev, next;
-
-        for (int i = 1; i < len; i <<= 1) {
+        ListNode prev;
+        for (int step = 1; step < n; step <<= 1) {
             prev = dummy;
-            while (prev.next != null) {
-                firstHead = prev.next;
-                firstTracker = prev;
-                for (int j = 0; j < i && firstTracker.next != null; j++) {
-                    firstTracker = firstTracker.next;
-                }
-                secondTracker = firstTracker;
-                for (int j = 0; j < i && secondTracker.next != null; j++) {
-                    secondTracker = secondTracker.next;
-                }
-                secondHead = firstTracker.next;
-                next = secondTracker.next;
-                secondTracker.next = null;
-                firstTracker.next = null;
-
-                // merge
-                while (firstHead != null && secondHead != null) {
-                    if (firstHead.val < secondHead.val) {
-                        prev.next = firstHead;
-                        firstHead = firstHead.next;
-                    } else {
-                        prev.next = secondHead;
-                        secondHead = secondHead.next;
-                    }
-                    prev = prev.next;
-                }
-                if (firstHead == null) {
-                    prev.next = secondHead;
-                } else {
-                    prev.next = firstHead;
-                }
-                while (prev.next != null) {
-                    prev = prev.next;
-                }
-                prev.next = next;
+            ListNode cur = dummy.next;
+            while (cur != null) {
+                ListNode left = cur;
+                ListNode right = split(left, step);
+                cur = split(right, step);
+                prev = merge(left, right, prev);
             }
         }
         return dummy.next;
     }
 
-    public static void main(String[] args) {
-        Problem148 p = new Problem148();
-        LinkedList t = new LinkedList(new int[]{0,-1,4,2,3,1});
-        System.out.println(p.sortList(t.head));
+    private ListNode split(ListNode left, int step) {
+        if (left == null) return null;
+        ListNode p = left;
+        for (int i = 1; i < step && p.next != null; i++) {
+            p = p.next;
+        }
+        ListNode right = p.next;
+        p.next = null;
+        return right;
+    }
+
+    private ListNode merge(ListNode left, ListNode right, ListNode prev) {
+        ListNode p = prev;
+        while (left != null && right != null) {
+            if (left.val > right.val) {
+                p.next = right;
+                right = right.next;
+            } else {
+                p.next = left;
+                left = left.next;
+            }
+            p = p.next;
+        }
+        if (left == null) p.next = right;
+        else p.next = left;
+        while (p.next != null) p = p.next;
+        // return prev node
+        return p;
     }
 }

@@ -5,33 +5,29 @@ import java.util.List;
 
 public class Problem93 {
     public List<String> restoreIpAddresses(String s) {
-        List<String> ans = new ArrayList<>();
-        if (s.length() > 12) {
-            return ans;
-        }
-        ipBT(ans, s, 0, new StringBuilder(), 0);
-        return ans;
+        List<String> res = new ArrayList<>();
+        restore(new StringBuilder(), s, 0, res, 0);
+        return res;
     }
 
-    private void ipBT(List<String> ans, String s, int n, StringBuilder sb, int count) {
-        if (count == 4) {
-            if (n != s.length()) return;
-            ans.add(sb.deleteCharAt(sb.length() - 1).toString());
-            sb.append('.');
+    private void restore(StringBuilder sb, String s, int level, List<String> res, int l) {
+        if (l == s.length() || level == 4) {
+            if (l == s.length() && level == 4)
+                res.add(sb.toString());
             return;
         }
-        if (count == 3 && s.length() - n > 3) return;
-        for (int i = 1; i < 4 && n + i <= s.length(); i++) {
-            String digitString = s.substring(n, n + i);
-            int digit = Integer.parseInt(digitString);
-            if ((digitString.startsWith("0") && digitString.length()>1) || (i==3 && Integer.parseInt(digitString) >= 256)) continue;
-            if (digit < 256 && digit > -1) {
-                sb.append(digitString);
-                sb.append(".");
-                ipBT(ans, s, n + i, sb, count + 1);
-                sb.delete(sb.length() - i - 1, sb.length());
+        for (int i = 1; i <= 3; i++) {
+            if (l + i > s.length()) break;
+            int v = Integer.parseInt(s.substring(l, l + i));
+            if (i == 1 || i == 2 && v >= 10 && v <= 99 || i == 3 && v >= 100 && v <= 255) {
+                sb.append(v);
+                if (level < 3) sb.append('.');
+                restore(sb, s, level + 1, res, l + i);
+                if (level < 3) sb.deleteCharAt(sb.length() - 1);
+                sb.delete(sb.length() - i, sb.length());
             }
         }
+
     }
 
     public static void main(String[] args) {
