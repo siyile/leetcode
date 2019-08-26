@@ -1,34 +1,21 @@
 import utils.TreeNode;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Problem662 {
+    Map<Integer, Integer> map = new HashMap<>();
+    int width = 0;
     public int widthOfBinaryTree(TreeNode root) {
-        if (root == null) return 0;
-        int ans = 0;
-        Deque<Integer> store = new LinkedList<>();
-        Queue<TreeNode> q = new LinkedList<>();
-        store.add(-1);
-        q.add(root);
-        while (!q.isEmpty()) {
-            int size = q.size();
-            Integer start = store.peekFirst();
-            Integer last = store.peekLast();
-            ans = Math.max(ans, last - start + 1);
-            for (int i = 0; i < size; i++) {
-                TreeNode tmp = q.poll();
-                int x = store.pollFirst();
-                if (tmp.left != null) {
-                    q.add(tmp.left);
-                    store.add(2 * x);
-                }
-                if (tmp.right != null) {
-                    q.add(tmp.right);
-                    store.add(2 * x + 1);
-                }
-            }
-        }
-        return ans;
+        inorder(root, 0, 0);
+        return width;
     }
 
+    private void inorder(TreeNode node, int x, int y) {
+        if (node == null) return;
+        inorder(node, x * 2 - 1, y);
+        map.putIfAbsent(y, x);
+        width = Math.max(x - map.get(y) + 1, width);
+        inorder(node, x * 2, y);
+    }
 }

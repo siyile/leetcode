@@ -4,25 +4,31 @@ import utils.BinaryTree;
 import utils.TreeNode;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 public class Problem103 {
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        Queue<TreeNode> q = new LinkedList<>();
         List<List<Integer>> ans = new ArrayList<>();
-        visit(ans, root, 0);
-        for (int i = 1; i < ans.size(); i += 2) {
-            Collections.reverse(ans.get(i));
+        if (root == null) return ans;
+        q.add(root);
+        boolean reverse = false;
+        while (!q.isEmpty()) {
+            int size = q.size();
+            List<Integer> tmp = new LinkedList<>();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = q.poll();
+                if (reverse) tmp.add(0, node.val);
+                else tmp.add(node.val);
+                if (node.left != null) q.add(node.left);
+                if (node.right != null) q.add(node.right);
+            }
+            ans.add(tmp);
+            reverse = !reverse;
         }
         return ans;
-    }
-
-    public void visit(List<List<Integer>> ans, TreeNode node, int height) {
-        if (node == null) return;
-        if (height == ans.size()) ans.add(new ArrayList<>());
-        ans.get(height).add(node.val);
-        visit(ans, node.left, height + 1);
-        visit(ans, node.right, height + 1);
     }
 
     public static void main(String[] args) {

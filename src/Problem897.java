@@ -1,15 +1,33 @@
 import utils.TreeNode;
 
 public class Problem897 {
-    public TreeNode increasingBST(TreeNode root) {
-        return link(root, null);
+    TreeNode cur;
+
+    public TreeNode increasingBST1(TreeNode root) {
+        return increasingBST1(root, null);
     }
 
-    public TreeNode link(TreeNode root, TreeNode tail) {
+    public TreeNode increasingBST1(TreeNode root, TreeNode tail) {
         if (root == null) return tail;
-        TreeNode res = link(root.left, root);
+        TreeNode res = increasingBST1(root.left, root);
         root.left = null;
-        root.right = link(root.right, tail);
+        root.right = increasingBST1(root.right, tail);
         return res;
+    }
+
+    public TreeNode increasingBST(TreeNode root) {
+        TreeNode ans = new TreeNode(0);
+        cur = ans;
+        inorder(root);
+        return ans.right;
+    }
+
+    private void inorder(TreeNode node) {
+        if (node == null) return;
+        inorder(node.left);
+        node.left = null;
+        cur.right = node;
+        cur = node;
+        inorder(node.right);
     }
 }

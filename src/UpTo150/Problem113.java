@@ -7,28 +7,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Problem113 {
+    List<List<Integer>> ans = new ArrayList<>();
+
     public List<List<Integer>> pathSum(TreeNode root, int sum) {
-        List<List<Integer>> ans = new ArrayList<>();
-        path(root, sum, ans, new ArrayList<>());
+        sum(root, sum, new ArrayList<>());
         return ans;
     }
 
-    public void path(TreeNode root, int sum, List<List<Integer>> ans, List<Integer> temp) {
-        if (root == null) return ;
-        if (root.left == null && root.right == null) {
-            if (sum == root.val) {
-                temp.add(root.val);
-                ans.add(new ArrayList<>(temp));
-                temp.remove(temp.size() - 1);
-            } else return;
+    private void sum(TreeNode node, int sum, List<Integer> tmp) {
+        if (sum <= 0) return;
+        if (node == null) return;
+        sum -= node.val;
+        tmp.add(node.val);
+        if (node.left == null && node.right == null) {
+            if (sum == 0) ans.add(new ArrayList<>(tmp));
+        } else {
+            sum(node.left, sum, tmp);
+            sum(node.right, sum, tmp);
         }
-        temp.add(root.val);
-        path(root.left, sum - root.val, ans, temp);
-        path(root.right, sum - root.val, ans, temp);
-        temp.remove(temp.size() - 1);
+        tmp.remove(tmp.size() - 1);
     }
-
-
 
     public static void main(String[] args) {
         Problem113 p = new Problem113();

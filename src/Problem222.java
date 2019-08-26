@@ -1,43 +1,47 @@
 import utils.TreeNode;
 
 public class Problem222 {
-    public int countNodes(TreeNode root) {
-        if (root == null) return 0;
-
+    public int countNodes1(TreeNode root) {
         TreeNode node = root;
-        int d = 1;
-        while (node.left != null) {
-            d++;
+        int h = 0;
+        while (node != null) {
+            h++;
             node = node.left;
         }
-
-        node = root;
-        int left = 1, right = (int)Math.pow(2, d - 1);
-        while (left < right) {
-            int pivot = left + (right - left) / 2;
-            if (exist(pivot, d, root)) {
-                left = pivot;
+        int l = 0, r = (int) Math.pow(2, h - 1) - 1;
+        while (l < r) {
+            int m = (l + r) / 2;
+            if (exists(root, m, h)) {
+                l = m;
             } else {
-                right = pivot - 1;
+                r = m - 1;
             }
         }
-
-        return (int) Math.pow(2, d - 1) - 1 + left;
+        return (int) Math.pow(2, h - 1) + r;
     }
 
-    private boolean exist(int idx, int d, TreeNode root) {
-        int l = 1, r = (int) Math.pow(2, d - 1);
+    private boolean exists(TreeNode root, int m, int d) {
+        int l = 0, r = (int) Math.pow(2, d - 1) - 1;
         TreeNode node = root;
-        for (int i = 0; i < d; i++) {
-            int pivot = l + (r - l) / 2;
-            if (pivot > idx) {
+        for (int i = 0; i < d - 1; i++) {
+            int pivot = (l + r) / 2;
+            if (pivot > m) {
                 r = pivot - 1;
-                node = node.right;
+                node = node.left;
             } else {
                 l = pivot;
-                node = node.left;
+                node = node.right;
             }
         }
         return node != null;
+    }
+
+    private int height(TreeNode node) {
+        return node == null ? -1 : height(node.left) + 1;
+    }
+
+    public int countNodes(TreeNode root) {
+        int h = height(root);
+        return height(root.right) == h - 1 ? countNodes(root.right) + (1 << h) : countNodes(root.left) + (1 << h - 1);
     }
 }

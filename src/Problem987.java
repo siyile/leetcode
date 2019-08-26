@@ -1,53 +1,57 @@
 import utils.TreeNode;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class Problem987 {
+    Queue<Integer> q = new PriorityQueue<>();
+    Map<Integer, Queue<Point>> map = new HashMap<>();
+
     public List<List<Integer>> verticalTraversal(TreeNode root) {
-        List<Node> store = new ArrayList<>();
+        preorder(root, 0, 0);
         List<List<Integer>> ans = new ArrayList<>();
-        visit(root, store, 0, 0);
-        store.sort(new Comparator<Node>() {
-            @Override
-            public int compare(Node o1, Node o2) {
-                if (o1.x != o2.x) {
-                    return o1.x - o2.x;
-                }
-                if (o1.y != o2.y) {
-                    return o1.y - o2.y;
-                }
-                return o1.val - o2.val;
+        while (!q.isEmpty()) {
+            int x = q.poll();
+            List<Integer> tmp = new ArrayList<>();
+            Queue<Point> tmpQueue = map.get(x);
+            while (!tmpQueue.isEmpty()) {
+                tmp.add(tmpQueue.poll().val);
             }
-        });
-        int cur = store.get(0).x;
-        List<Integer> tmp = new ArrayList<>();
-        for (Node node :
-                store) {
-            if (cur != node.x) {
-                ans.add(tmp);
-                tmp = new ArrayList<>();
-            }
-            tmp.add(node.val);
+            ans.add(tmp);
         }
-        ans.add(tmp);
         return ans;
     }
 
-    public void visit(TreeNode node, List<Node> store, int x, int y) {
+    private void preorder(TreeNode node, int x, int y) {
         if (node == null) return;
-        store.add(new Node(x, y, node.val));
-        visit(node.left, store, x - 1, y - 1);
-        visit(node.right, store, x + 1, y - 1);
+        Point point = new Point(x, y, node.val);
+        Queue<Point> q;
+        if (map.containsKey(x)) {
+            q = map.get(x);
+        } else {
+            q = new PriorityQueue<>(new Comparator<Point>() {
+                @Override
+                public int compare(Point o1, Point o2) {
+                    if (o1.y != o2.y) {
+                        return o2.y - o1.y;
+                    } else {
+                        return o1.val - o2.val;
+                    }
+                }
+            });
+            map.put(x, q);
+            this.q.add(x);
+        }
+        q.add(point);
+        preorder(node.left, x - 1, y - 1);
+        preorder(node.right, x + 1, y - 1);
     }
 
-    class Node {
+    private class Point {
         int x;
         int y;
         int val;
 
-        Node(int x, int y, int val) {
+        public Point(int x, int y, int val) {
             this.x = x;
             this.y = y;
             this.val = val;

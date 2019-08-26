@@ -1,18 +1,19 @@
 import utils.TreeNode;
 
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class Problem173 {
     class BSTIterator {
-        TreeNode root;
-        Stack<TreeNode> s;
+
+        Deque<TreeNode> deque = new ArrayDeque<>();
+        TreeNode node;
 
         public BSTIterator(TreeNode root) {
-            this.root = root;
-            s = new Stack<>();
-            while (root != null) {
-                s.add(root);
-                root = root.left;
+            node = root;
+            while (node != null) {
+                deque.push(node);
+                node = node.left;
             }
         }
 
@@ -20,34 +21,21 @@ public class Problem173 {
          * @return the next smallest number
          */
         public int next() {
-            if (!s.isEmpty()) {
-                TreeNode node = s.peek();
-                TreeNode temp = node;
-                if (node.right != null) {
-                    node = node.right;
-                    while (node != null) {
-                        s.add(node);
-                        node = node.left;
-                    }
-                }
-                return temp.val;
-            } else {
-                return -1;
+            TreeNode ans;
+            node = deque.pop();
+            ans = node;
+            node = node.right;
+            while (node != null) {
+                deque.push(node);
+                node = node.left;
             }
+            return ans.val;
         }
 
-        /**
-         * @return whether we have a next smallest number
-         */
+        /** @return whether we have a next smallest number */
         public boolean hasNext() {
-            return s.isEmpty();
+            return !deque.isEmpty();
         }
-        /**
-         * Your BSTIterator object will be instantiated and called as such:
-         * BSTIterator obj = new BSTIterator(root);
-         * int param_1 = obj.next();
-         * boolean param_2 = obj.hasNext();
-         */
     }
 
 }

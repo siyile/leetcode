@@ -1,60 +1,51 @@
-import java.util.*;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Set;
 
 public class Problem547 {
-    public int findCircleNum(int[][] M) {
-        // bfs
-//        return bfs(M);
-        // dfs
-        return dfs(M);
-        // union_found
+    public int dfs(int[][] M) {
+        int n = M.length;
+        boolean[] visited = new boolean[n];
+        int cnt = 0;
+        for (int i = 0; i < n; i++) {
+            if (!visited[i]) {
+                cnt++;
+                visited[i] = true;
+                dfs(M, visited, i);
+            }
+        }
+        return cnt;
+    }
+
+    private void dfs(int[][] M, boolean[] visited, int i) {
+        int n = M.length;
+        for (int j = 0; j < n; j++) {
+            if (M[i][j] == 1 && !visited[j]) {
+                visited[i] = true;
+                dfs(M, visited, j);
+            }
+        }
     }
 
     private int bfs(int[][] M) {
         int n = M.length;
-        int cnt = 0;
         boolean[] seen = new boolean[n];
-
-        for (int k = 0; k < n; k++) {
-            if (!seen[k]) {
-                seen[k] = true;
-                Queue<Integer> q = new LinkedList<>();
-                q.add(k);
+        int cnt = 0;
+        for (int i = 0; i < n; i++) {
+            if (!seen[i]) {
                 cnt++;
+                Queue<Integer> q = new LinkedList<>();
+                q.add(i);
+                seen[i] = true;
                 while (!q.isEmpty()) {
                     int size = q.size();
-                    for (int i = 0; i < size; i++) {
+                    for (int j = 0; j < size; j++) {
                         int x = q.poll();
-                        for (int j = 0; j < n; j++) {
-                            if (!seen[j] && M[x][j] != 0) {
-                                seen[j] = true;
-                                q.add(j);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return cnt;
-    }
-
-    private int dfs(int[][] M) {
-        int n = M.length;
-        int cnt = 0;
-        boolean[] visited = new boolean[n];
-
-        for (int i = 0; i < n; i++) {
-            if (!visited[i]) {
-                cnt++;
-                Stack<Integer> s = new Stack<>();
-                s.push(i);
-                while (!s.isEmpty()) {
-                    int x = s.pop();
-                    if (!visited[x]) {
-                        visited[x] = true;
-                        for (int j = 0; j < n; j++) {
-                            if (!visited[j] && M[x][j] != 0) {
-                                s.push(j);
+                        for (int k = 0; k < n; k++) {
+                            if (M[x][k] == 1 && !seen[k]) {
+                                q.add(k);
+                                seen[k] = true;
                             }
                         }
                     }
@@ -67,34 +58,44 @@ public class Problem547 {
     private int unionFind(int[][] M) {
         int n = M.length;
         int[] parent = new int[n];
-        Arrays.fill(parent, -1);
+        int[] rate = new int[n];
         for (int i = 0; i < n; i++) {
-            for (int j = i; j < n; j++) {
-                int x = find(i, parent);
-                int y = find(j, parent);
-                if (x == y)
-                    continue;
-                union(x, y, parent);
+            parent[i] = i;
+        }
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                if (M[i][j] == 1) {
+                    union(parent, rate, i, j);
+                }
             }
         }
 
-        Set<Integer> s = new HashSet<>();
+        Set<Integer> set = new HashSet<>();
         for (int i = 0; i < n; i++) {
-            s.add(find(i, parent));
+            set.add(find(parent, i));
         }
-
-        return s.size();
+        return set.size();
     }
 
-    private int find(int node, int[] parent) {
-        if (parent[node] == -1)
-            return node;
-        return find(parent[node], parent);
+    private void union(int[] parent, int[] rate, int x, int y) {
+        int rootX = find(parent, x);
+        int rootY = find(parent, y);
+        if (rootX != rootY) {
+            if (rate[rootX] > rate[rootY]) {
+                parent[rootY] = rootX;
+                rate[rootX]++;
+            } else {
+                parent[rootX] = rootY;
+                rate[rootY]++;
+            }
+        }
     }
 
-    private void union(int x, int y, int[] parent) {
-        int setX = find(x, parent);
-        int setY = find(y, parent);
-        parent[setX] = setY;
+    private int find(int[] parent, int x) {
+        if (parent[x] != x) {
+            parent[x] = find(parent, parent[x]);
+            return parent[x];
+        }
+        return x;
     }
 }

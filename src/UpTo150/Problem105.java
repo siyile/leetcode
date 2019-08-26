@@ -8,20 +8,22 @@ import java.util.Map;
 
 public class Problem105 {
     public TreeNode buildTree(int[] preorder, int[] inorder) {
-        Map<Integer, Integer> inMap = new HashMap<>();
-        for(int i = 0; i < inorder.length; i++) {
-            inMap.put(inorder[i], i);
+        if (preorder.length == 0) return null;
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < inorder.length; i++) {
+            map.put(inorder[i], i);
         }
-        return buildTreeRecursive(preorder, inorder, 0, preorder.length, 0, inMap);
+        return buildTree(preorder, map, 0, preorder.length - 1, 0, inorder.length - 1);
     }
 
-    private TreeNode buildTreeRecursive(int[] preorder, int[] inorder, int start, int end, int preIndex, Map<Integer, Integer> inMap) {
-        if (end - start == 0) return null;
-        TreeNode root = new TreeNode(preorder[preIndex]);
-        int index = inMap.get(root.val);
-        root.left = buildTreeRecursive(preorder, inorder, start, index, preIndex + 1, inMap);
-        root.right = buildTreeRecursive(preorder, inorder, index + 1, end, preIndex + index - start + 1, inMap);
-        return root;
+    private TreeNode buildTree(int[] pre, Map<Integer, Integer> map, int pl, int pr, int il, int ir) {
+        if (pl < pr) return null;
+        if (pl == pr) return new TreeNode(pre[pl]);
+        int mi = map.get(pre[pl]);
+        TreeNode node = new TreeNode(pre[pl]);
+        node.left = buildTree(pre, map, pl + 1, pl + mi - il, il, mi - 1);
+        node.right = buildTree(pre, map, pl + mi - il + 1, pr, mi + 1, ir);
+        return node;
     }
 
     public static void main(String[] args) {

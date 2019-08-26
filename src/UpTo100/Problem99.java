@@ -5,40 +5,46 @@ import utils.TreeNode;
 
 public class Problem99 {
     public void recoverTree(TreeNode root) {
-        TreeNode cur = root;
-        TreeNode pre = null;
-        TreeNode first = null, second = null;
-        TreeNode prev ;
-         while (cur != null) {
-            if (cur.left != null) {
-                prev = cur.left;
-                while (prev.right != null && prev.right != cur) {
-                    prev = prev.right; // find prev node in left tree
+        TreeNode x = null, y = null, pred = null, node = root;
+
+        while (node != null) {
+            if (node.left != null) {
+                TreeNode predecessor = node.left;
+                while (predecessor.right != null && predecessor.right != node) {
+                    predecessor = predecessor.right;
                 }
-                if (prev.right == null) { // if prev.right == null
-                    prev.right = cur;     // , put root to prev.right
-                    cur = cur.left;       // root to left
+                if (predecessor.right == null) {
+                    predecessor.right = node;
+                    node = node.left;
                 } else {
-                    prev.right = null;            // restore tree shape
-                    if(pre!=null && pre.val > cur.val){
-                        if(first==null){first = pre;second = cur;}
-                        else{second = cur;}
+                    if (pred != null && pred.val > node.val) {
+                        y = node;
+                        if (x == null) x = pred;
                     }
-                    pre = cur;
-                    cur = cur.right;              // go back to up node or move to right child
+
+                    pred = node;
+                    predecessor.right = null;
+                    node = node.right;
                 }
             } else {
-                if(pre!=null && pre.val > cur.val){
-                    if(first==null){first = pre;second = cur;}
-                    else{second = cur;}
+                if (pred != null && pred.val > node.val) {
+                    y = node;
+                    if (x == null) x = pred;
                 }
-                pre = cur;
-                cur = cur.right;
+
+                pred = node;
+                node = node.right;
             }
         }
-         int temp = first.val;
-         first.val = second.val;
-         second.val = temp;
+        swap(x, y);
+    }
+
+    private void swap(TreeNode x, TreeNode y) {
+        if (x != y) {
+            int tmp = x.val;
+            x.val = y.val;
+            y.val = tmp;
+        }
     }
 
     public static void main(String[] args) {

@@ -10,12 +10,11 @@ import java.util.Stack;
 public class Problem94 {
     public List<Integer> inorderTraversal(TreeNode root) {
         List<Integer> ans = new ArrayList<>();
-        if (root == null) return ans;
         Stack<TreeNode> s = new Stack<>();
         TreeNode node = root;
-        while (node != null || !s.empty()) {
+        while (node != null || !s.isEmpty()) {
             while (node != null) {
-                s.add(node);
+                s.push(node);
                 node = node.left;
             }
             node = s.pop();

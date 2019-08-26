@@ -11,28 +11,21 @@ import java.util.Queue;
 public class Problem102 {
     public List<List<Integer>> levelOrder(TreeNode root) {
         List<List<Integer>> ans = new ArrayList<>();
-        if (root == null) return ans;
         Queue<TreeNode> q = new LinkedList<>();
+        if (root == null) return ans;
         q.add(root);
-        TreeNode node;
-        int start = 0, end = 1;
-        int cur = 0;
         while (!q.isEmpty()) {
-            if (cur == start) {
-                ans.add(new ArrayList<>());
-                start = end;
+            int size = q.size();
+            List<Integer> tmp = new ArrayList<>();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = q.poll();
+                tmp.add(node.val);
+                if (node.left != null)
+                    q.add(node.left);
+                if (node.right != null)
+                    q.add(node.right);
             }
-            node = q.poll();
-            cur++;
-            ans.get(ans.size() - 1).add(node.val);
-            if (node.left != null) {
-                q.add(node.left);
-                end += 1;
-            }
-            if (node.right != null) {
-                q.add(node.right);
-                end += 1;
-            }
+            ans.add(tmp);
         }
         return ans;
     }
