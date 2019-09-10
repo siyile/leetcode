@@ -3,7 +3,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class Problem785 {
-    public boolean isBipartite(int[][] graph) {
+    public boolean isBipartiteBfs(int[][] graph) {
         int[] color = new int[graph.length];
         Arrays.fill(color, -1);
         for (int i = 0; i < graph.length; i++) {
@@ -30,6 +30,25 @@ public class Problem785 {
 
             }
         }
+        return true;
+    }
+
+    public boolean isBipartite(int[][] graph) {
+        int n = graph.length;
+        // pending 0, red 1, blue -1
+        int[] colors = new int[n];
+        for (int i = 0; i < n; i++)
+            if (colors[i] == 0 && !dfs(i, 1, graph, colors))
+                return false;
+        return true;
+    }
+
+    private boolean dfs(int i, int color, int[][] graph, int[] colors) {
+        if (colors[i] != 0) return colors[i] == color;
+        colors[i] = color;
+        for (int nei : graph[i])
+            if (!dfs(nei, -color, graph, colors))
+                return false;
         return true;
     }
 }

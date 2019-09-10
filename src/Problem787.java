@@ -6,49 +6,44 @@ public class Problem787 {
         for (int i = 0; i < n; i++) {
             graph.add(new HashMap<>());
         }
-        for (int[] flight : flights) {
-            for (int j = 0; j < 3; j++) {
-                Map<Integer, Integer> edges = graph.get(flight[0]);
-                edges.put(flight[1], flight[2]);
-            }
+        for (int[] flight :
+                flights) {
+            graph.get(flight[0]).put(flight[1], flight[2]);
         }
 
-        Queue<Node> q = new PriorityQueue<>(new Comparator<Node>() {
+        Queue<Node> q = new PriorityQueue<Node>(new Comparator<Node>() {
             @Override
             public int compare(Node o1, Node o2) {
                 return o1.price - o2.price;
             }
         });
 
+        q.add(new Node(-1, 0, src));
         Set<Integer> settled = new HashSet<>();
-
-        q.add(new Node(0, src, K + 1));
         while (!q.isEmpty()) {
             Node node = q.poll();
-            if (node.city == dst) return node.price;
+            if (node.city == dst)
+                return node.price;
             settled.add(node.city);
-            if (node.stop > 0) {
+            if (node.stop < K)
                 for (Map.Entry<Integer, Integer> entry :
                         graph.get(node.city).entrySet()) {
-                    if (!settled.contains(entry.getKey())) {
-                        q.add(new Node(node.price + entry.getValue(), entry.getKey(), node.stop - 1));
-                    }
+                    if (!settled.contains(entry.getKey()))
+                        q.add(new Node(node.stop + 1, entry.getValue() + node.price, entry.getKey()));
                 }
-            }
         }
-
         return -1;
     }
 
     class Node {
+        int stop;
         int price;
         int city;
-        int stop;
 
-        public Node(int price, int city, int stop) {
-            this.price = price;
-            this.city = city;
+        public Node(int stop, int price, int node) {
             this.stop = stop;
+            this.price = price;
+            this.city = node;
         }
     }
 }

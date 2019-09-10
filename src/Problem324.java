@@ -1,52 +1,55 @@
 public class Problem324 {
     private int n;
 
-    public void wiggleSort(int[] nums) {
-        int mid = findKthLargest(nums, nums.length / 2);
-        n = nums.length - 1;
-        int l = 0, i = 0, r = nums.length - 1;
-        while (i < r) {
-            if (mid < mapIndex(i)) {
-                swap(nums, mapIndex(i++), mapIndex(l++));
-            } else if (mid > mapIndex(i)) {
-                swap(nums, mapIndex(i), mapIndex(r--));
-            } else
-                i++;
-        }
+    public static void main(String[] args) {
+        Problem324 p = new Problem324();
+        p.wiggleSort(new int[]{1, 5, 1, 1, 6, 4});
     }
 
-    private int mapIndex(int x) {
-        return (1 + 2 * x) % (n | 1);
+    public void wiggleSort(int[] nums) {
+        this.n = nums.length;
+        int median = findKthLargest(nums, n / 2);
+        System.out.println(median);
+        int i = 0, k = n - 1, j = 0;
+        while (j <= k) {
+            if (nums[index(j)] > median) {
+                swap(nums, index(i++), index(j++));
+            } else if (nums[index(j)] < median) {
+                swap(nums, index(k--), index(j));
+            } else {
+                j++;
+            }
+        }
     }
 
     private int findKthLargest(int[] nums, int k) {
         int l = 0, r = nums.length - 1;
         while (true) {
-            int pivot = partition(nums, l, r);
-            if (pivot > k) {
-                r = pivot - 1;
-            } else if (pivot < k) {
-                l = pivot + 1;
+            int pivot = nums[r];
+            int left = l;
+            for (int i = l; i < r; i++) {
+                if (nums[i] > pivot) {
+                    swap(nums, left++, i);
+                }
+            }
+            swap(nums, left, r);
+            if (left < k)
+                l = left + 1;
+            else if (left > k) {
+                r = left - 1;
             } else {
-                return nums[pivot];
+                return nums[k];
             }
         }
     }
 
-    private int partition(int[] nums, int l, int r) {
-        int i = l;
-        for (int j = l; j <= r - 1; j++) {
-            if (nums[j] > nums[r]) {
-                swap(nums, i++, j);
-            }
-        }
-        swap(nums, i, r);
-        return i;
+    private int index(int i) {
+        return (2 * i + 1) % (n | 1);
     }
 
-    private void swap(int[] nums, int a, int b) {
-        int tmp = nums[a];
-        nums[a] = nums[b];
-        nums[b] = tmp;
+    private void swap(int[] nums, int i, int j) {
+        int tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
     }
 }

@@ -5,46 +5,47 @@ import java.util.*;
 public class Problem127 {
     public static void main(String[] args) {
         Problem127 p = new Problem127();
-        String[] a = {"a", "b", "c"};
+        String[] a = {"hot", "dot", "dog", "lot", "log", "cog"};
         List<String> words = new ArrayList<>();
         Collections.addAll(words, a);
-        System.out.println(p.ladderLength("a", "c", words));
+        System.out.println(p.ladderLength("hit", "cog", words));
     }
 
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-        if (!wordList.contains(endWord)) return 0;
-        Set<String> beginSet = new HashSet<>();
-        Set<String> endSet = new HashSet<>();
+        Set<String> set = new HashSet<>(wordList);
+        if (!set.contains(endWord)) return 0;
+        Set<String> beginSet = new HashSet<>(), endSet = new HashSet<>(), visited = new HashSet<>();
         beginSet.add(beginWord);
         endSet.add(endWord);
-        Set<String> visited = new HashSet<>();
-        int level = 1;
+        int len = 1;
         while (!beginSet.isEmpty() && !endSet.isEmpty()) {
+            Set<String> tmp = new HashSet<>();
             if (beginSet.size() > endSet.size()) {
-                Set<String> set = beginSet;
+                Set<String> temp = beginSet;
                 beginSet = endSet;
-                endSet = set;
+                endSet = temp;
             }
-            Set<String> temp = new HashSet<>();
-            wordList.removeAll(beginSet);
-            for (String word : beginSet) {
-                char[] chs = word.toCharArray();
-                for (int i = 0; i < chs.length; i++) {
-                    for (char ch = 'a'; ch <= 'z'; ch++) {
-                        char old = chs[i];
-                        chs[i] = ch;
-                        String target = String.valueOf(chs);
-                        if (endSet.contains(target)) return level + 1;
-                        if (!visited.contains(target) && wordList.contains(target)) {
-                            visited.add(target);
-                            temp.add(target);
+            set.removeAll(beginSet);
+            len++;
+            for (String s :
+                    beginSet) {
+                // transform
+                char[] chs = s.toCharArray();
+                for (int k = 0; k < s.length(); k++) {
+                    char ch = chs[k];
+                    for (char i = 'a'; i <= 'z'; i++) {
+                        chs[k] = i;
+                        String str = String.valueOf(chs);
+                        if (!visited.contains(str) && set.contains(str)) {
+                            tmp.add(str);
+                            visited.add(str);
                         }
-                        chs[i] = old;
                     }
+                    chs[k] = ch;
                 }
             }
-            beginSet = temp;
-            level++;
+
+            beginSet = tmp;
         }
         return 0;
     }

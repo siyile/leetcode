@@ -16,6 +16,7 @@ public class Problem815 {
             Arrays.sort(route);
             graph.add(new ArrayList<>());
         }
+
         // create graph
         for (int i = 0; i < n; i++) {
             for (int j = i + 1; j < n; j++) {

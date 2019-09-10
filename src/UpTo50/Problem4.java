@@ -7,38 +7,30 @@ public class Problem4 {
             nums1 = nums2;
             nums2 = tmp;
         }
-        int m = nums1.length, n = nums2.length;
+        int len1 = nums1.length, len2 = nums2.length, halfLen = (len1 + len2 + 1) / 2;
 
-        int half = (m + n + 1) / 2;
-        int l = 0, r = m;
-        while (l <= r) {
-            int i = (l + r) / 2;
-            int j = half - i;
-            if (i > 0 && nums1[i - 1] > nums2[j]) {
-                r = i - 1;
-            } else if (i < m && nums2[j - 1] > nums1[i]) {
-                l = i + 1;
-            } else {
-                double maxLeft = 0;
-                if (i == 0)
-                    maxLeft = nums2[j - 1];
-                else if (j == 0)
-                    maxLeft = nums1[i - 1];
-                else
-                    maxLeft = Math.max(nums1[i - 1], nums2[j - 1]);
-                if ((m + n) % 2 == 1) return maxLeft;
-
-                double minRight = 0;
-                if (i == m)
-                    minRight = nums2[j];
-                else if (j == n)
-                    minRight = nums1[i];
-                else
-                    minRight = Math.min(nums1[i], nums2[j]);
-                return (maxLeft + minRight) / 2;
+        int l = 0, r = len1;
+        while (true) {
+            int aCount = (r - l) / 2 + l;
+            int bCount = halfLen - aCount;
+            if (aCount > 0 && nums1[aCount - 1] > nums2[bCount])
+                r = aCount - 1;
+            else if (aCount < len1 && nums2[bCount - 1] > nums1[aCount])
+                l = aCount + 1;
+            else {
+                int leftHalfMax = aCount == 0 ? nums2[bCount - 1] :
+                        bCount == 0 ? nums1[aCount - 1] :
+                                Math.max(nums1[aCount - 1], nums2[bCount - 1]);
+                if (odd(len1, len2)) return leftHalfMax;
+                int rightHalfMin = aCount == len1 ? nums2[bCount] :
+                        bCount == len2 ? nums1[aCount] :
+                                Math.min(nums1[aCount], nums2[bCount]);
+                return (leftHalfMax + rightHalfMin) / 2.0;
             }
         }
+    }
 
-        return 0;
+    private boolean odd(int len1, int len2) {
+        return ((len1 + len2) & 1) == 1;
     }
 }
