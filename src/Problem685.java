@@ -1,43 +1,48 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class Problem685 {
     public int[] findRedundantDirectedConnection(int[][] edges) {
-        int[] parent = new int[edges.length + 1];
-        int[] can2 = new int[]{-1, -1};
-        int[] can1 = new int[]{-1, -1};
+        int n = edges.length;
+        int[] parent = new int[n + 1];
+        List<Integer> first = new ArrayList<>(), second = new ArrayList<>();
+        List<List<Integer>> graph = new ArrayList<>();
+        for (int i = 0; i <= n; i++) {
+            parent[i] = i;
+            graph.add(new ArrayList<>());
+        }
         for (int[] edge :
                 edges) {
-            if (parent[edge[1]] == 0) {
-                parent[edge[1]] = edge[0];
-            } else {
-                can1[0] = parent[edge[1]];
-                can1[1] = edge[1];
-                can2[0] = edge[0];
-                can2[1] = edge[1];
-                edge[1] = 0;
-                break;
+            int x = edge[0], y = edge[1];
+            graph.get(y).add(x);
+            if (graph.get(y).size() == 2) {
+                second = Arrays.asList(x, y);
+                first = Arrays.asList(graph.get(y).get(0), y);
             }
-        }
-        for (int i = 0; i < parent.length; i++) {
-            parent[i] = i;
         }
 
         for (int[] edge :
                 edges) {
-            int child = edge[1], father = edge[0];
-            if (find(parent, father) == child) {
-                if (can2[1] == -1) {
-                    return edge;
-                }
-                return can1;
+            int x = edge[0], y = edge[1], rx = find(parent, x), ry = find(parent, y);
+            if (first.size() > 0 && x == first.get(0) && y == first.get(1)) continue;
+            if (rx != y)
+                parent[rx] = ry;
+            else {
+                if (second.size() != 0)
+                    return new int[]{second.get(0), second.get(1)};
+                else return edge;
             }
         }
-        return can2;
+
+        return new int[]{first.get(0), first.get(1)};
     }
 
-    public int find(int[] parent, int node) {
-        while (node != parent[node]) {
-            parent[node] = parent[parent[node]];
-            node = parent[node];
+    private int find(int[] parent, int i) {
+        if (parent[i] != i) {
+            parent[i] = find(parent, parent[i]);
+            return parent[i];
         }
-        return node;
+        return i;
     }
 }

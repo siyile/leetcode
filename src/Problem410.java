@@ -26,35 +26,39 @@ public class Problem410 {
     }
 
     public int splitArray(int[] nums, int m) {
-        long l = 0;
-        long r = 0;
-        for (int num :
-                nums) {
-            r += num;
-            if (l < num) l = num;
-        }
-
+        // binarySearch
+        int l = 1, r = Integer.MAX_VALUE;
         while (l < r) {
-            long mid = (l + r) >> 2;
-            if (!check(nums, m, mid)) {
-                l = mid + 1;
-            } else {
-                r = mid;
-            }
+            // mi: middle
+            int mi = (r - l) / 2 + l;
+            // if true, middle is acceptable, set right to middle;
+            if (possible(nums, m, mi))
+                r = mi;
+                // if false, middle is unacceptable, set left to middle + 1;
+            else
+                l = mi + 1;
         }
-        return (int) l;
+        return l;
     }
 
-    private boolean check(int[] nums, int m, long x) {
-        int cnt = 1, sum = 0;
+    // check whether suggested group sum is possible
+    private boolean possible(int[] nums, int targetCnt, int targetSum) {
+        // curSum: current group sum
+        // set initial current group sum to sum for concise code
+        int curSum = targetSum, groupNum = 0;
         for (int num :
                 nums) {
-            if (num + sum > x) {
-                cnt++;
-                sum = 0;
+            // if current num is bigger than target sum, failed anyway
+            if (num > targetSum) return false;
+            curSum += num;
+            // if curSum bigger than target sum, groupNumber++ and set current sum to num
+            if (curSum > targetSum) {
+                curSum = num;
+                groupNum++;
             }
-            sum += num;
+            // fail if group number bigger than target group count
+            if (groupNum > targetCnt) return false;
         }
-        return m >= cnt;
+        return true;
     }
 }

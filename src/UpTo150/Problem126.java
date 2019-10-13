@@ -3,92 +3,58 @@ package UpTo150;
 import java.util.*;
 
 public class Problem126 {
+    List<List<String>> ans = new ArrayList<>();
     public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
-        List<List<String>> ans = new ArrayList<>();
-        if (!wordList.contains(endWord)) return ans;
-        Set<String> beginSet = new HashSet<>();
-        beginSet.add(beginWord);
-        Set<String> endSet = new HashSet<>();
-        endSet.add(endWord);
         Set<String> dict = new HashSet<>(wordList);
-        Map<String, List<String>> routes = new HashMap<>();
 
-        // generate routes
-        bfs(beginSet, endSet, routes, dict, false);
+        // build graph
+        Map<String, List<String>> graph = new HashMap<>();
+        Set<String> curLevel = new HashSet<>();
+        curLevel.add(beginWord);
+        boolean found = false;
+        while (!found && !curLevel.isEmpty()) {
+            dict.removeAll(curLevel);
+            Set<String> nextLevel = new HashSet<>();
+            for (String s :
+                    curLevel) {
+                graph.put(s, new ArrayList<>());
+                char[] chs = s.toCharArray();
+                for (int k = 0; k < beginWord.length(); k++) {
+                    char x = chs[k];
+                    for (char c = 'a'; c <= 'z'; c++) {
+                        chs[k] = c;
+                        String tmp = new String(chs);
+                        if (dict.contains(tmp)) {
+                            graph.get(s).add(tmp);
+                            nextLevel.add(tmp);
+                            if (tmp.equals(endWord)) found = true;
+                        }
+                    }
+                    chs[k] = x;
+                }
+            }
+            curLevel = nextLevel;
+        }
 
-
-        // generate paths
-        List<String> path = new ArrayList<>();
-        path.add(beginWord);
-        generatePath(beginWord, endWord, routes, ans, path);
+        if (!found) return ans;
+        List<String> tmp = new ArrayList<>();
+        tmp.add(beginWord);
+        // build path
+        dfs(beginWord, endWord, graph, tmp);
         return ans;
     }
 
-    public boolean bfs(Set<String> beginSet, Set<String> endSet, Map<String, List<String>> routes,
-                       Set<String> dict, boolean flip) {
-        if (beginSet.isEmpty())
-            return false;
-
-        if (beginSet.size() > endSet.size())
-            return bfs(endSet, beginSet, routes, dict, !flip);
-
-        dict.removeAll(beginSet);
-        dict.removeAll(endSet);
-
-        Set<String> next = new HashSet<>();
-
-        boolean done = false;
-
-        for (String x :
-                beginSet) {
-            for (int i = 0; i < x.length(); i++) {
-                char[] chs = x.toCharArray();
-                for (char ch = 'a'; ch <= 'z'; ch++) {
-                    if (chs[i] != ch) {
-                        chs[i] = ch;
-                        String word = String.valueOf(chs);
-
-                        String prev = flip ? word : x;
-                        String cur = flip ? x : word;
-
-                        List<String> route;
-
-                        if (endSet.contains(word)) {
-                            route = routes.getOrDefault(prev, new ArrayList<>());
-                            done = true;
-                            route.add(cur);
-                            routes.put(prev, route);
-                        }
-
-
-                        if (!done && dict.contains(word)) {
-                            route = routes.getOrDefault(prev, new ArrayList<>());
-                            route.add(cur);
-                            next.add(word);
-                            routes.put(prev, route);
-                        }
-                    }
-                }
-            }
-        }
-
-        return  done || bfs(endSet, next, routes, dict, !flip);
-    }
-
-    public void generatePath(String cur, String endWord, Map<String, List<String>> routes,
-                             List<List<String>> ans, List<String> path) {
-        if (cur.equals(endWord)) {
-            ans.add(new ArrayList<>(path));
+    private void dfs(String node, String end, Map<String, List<String>> graph, List<String> tmp) {
+        if (node.equals(end)) {
+            ans.add(new ArrayList<>(tmp));
             return;
         }
-
-        if (!routes.containsKey(cur)) return;
-
-        for (String word :
-                routes.get(cur)) {
-            path.add(word);
-            generatePath(word, endWord, routes, ans, path);
-            path.remove(path.size() - 1);
+        if (!graph.containsKey(node)) return;
+        for (String nei :
+                graph.get(node)) {
+            tmp.add(nei);
+            dfs(nei, end, graph, tmp);
+            tmp.remove(tmp.size() - 1);
         }
     }
 
