@@ -1,9 +1,7 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class Problem218 {
-    public List<List<Integer>> getSkyline(int[][] buildings) {
+    public List<List<Integer>> getSkyline0(int[][] buildings) {
         int n = buildings.length;
         List<List<Integer>> output = new ArrayList<>();
 
@@ -62,7 +60,6 @@ public class Problem218 {
         }
     }
 
-    ;
 
     private void appendRest(List<List<Integer>> output, List<List<Integer>> skylines, int p, int currY) {
         for (int i = p; i < skylines.size(); i++) {
@@ -74,5 +71,46 @@ public class Problem218 {
                 currY = y;
             }
         }
+    }
+
+    public List<List<Integer>> getSkyline(int[][] buildings) {
+        List<int[]> heights = new ArrayList<>();
+        for (int[] b :
+                buildings) {
+            heights.add(new int[]{b[0], -b[2]});
+            heights.add(new int[]{b[1], b[2]});
+        }
+
+//        Collections.sort(heights, new Comparator<int[]>(){
+//            @Override
+//            public int compare(int[] o1, int[] o2) {
+//                return o1[0] == o2[0] ? o1[1] - o2[1] : o1[0] - o2[0];
+//            }
+//        });
+
+        Collections.sort(heights, ((o1, o2) -> (o1[0] == o2[0] ? o1[1] - o2[1] : o1[0] - o2[0])));
+
+        // height, cnt
+        TreeMap<Integer, Integer> map = new TreeMap<>(Collections.reverseOrder());
+        map.put(0, -1);
+        int prev = 0;
+
+        List<List<Integer>> ans = new ArrayList<>();
+        for (int[] h :
+                heights) {
+            if (h[1] < 0) {
+                map.put(-h[1], map.getOrDefault(-h[1], 0) + 1);
+            } else {
+                int cnt = map.get(h[1]);
+                if (cnt == 1) map.remove(h[1]);
+                else map.put(h[1], cnt - 1);
+            }
+            int cur = map.firstKey();
+            if (prev != cur) {
+                ans.add(Arrays.asList(h[0], cur));
+                prev = cur;
+            }
+        }
+        return ans;
     }
 }

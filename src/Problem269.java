@@ -1,75 +1,61 @@
 import java.util.*;
 
 public class Problem269 {
-    public static void main(String[] args) {
-        Problem269 p = new Problem269();
-
-        System.out.println(p.alienOrder(new String[]{"z", "x", "z"}));
-    }
-
     public String alienOrder(String[] words) {
+        Map<Character, Set<Character>> map = new HashMap<>();
         int[] degree = new int[26];
         Arrays.fill(degree, -1);
-        List<List<Integer>> graph = new ArrayList<>();
-        for (int i = 0; i < 26; i++) {
-            graph.add(new ArrayList<>());
-        }
-        int maxLen = 0;
-        for (String s :
+
+        for (String word :
                 words) {
-            for (int i = 0; i < s.length(); i++) {
-                degree[s.charAt(i) - 'a'] = 0;
+            for (int i = 0; i < word.length(); i++) {
+                degree[word.charAt(i) - 'a'] = 0;
             }
-            maxLen = Math.max(maxLen, s.length());
         }
 
-        for (int i = 0; i < maxLen; i++) {
-            int j = 0;
-            while (j < words.length && words[j].length() < i + 1) j++;
-            String prev = words[j++];
-            for (; j < words.length; j++) {
-                String word = words[j];
-                if (word.length() > i) {
-                    if (validate(word, prev, i)) {
-                        degree[prev.charAt(i) - 'a']++;
-                        graph.get(word.charAt(i) - 'a').add(prev.charAt(i) - 'a');
-
+        for (int i = 1; i < words.length; i++) {
+            String w1 = words[i], w2 = words[i - 1];
+            int len = Math.min(w1.length(), w2.length());
+            for (int j = 0; j < len; j++) {
+                char c1 = w2.charAt(j), c2 = w1.charAt(j);
+                if (c1 != c2) {
+                    if (!map.containsKey(c1)) {
+                        map.put(c1, new HashSet<>());
                     }
-                    prev = word;
+                    Set<Character> set = map.get(c1);
+                    if (set.add(c2)) {
+                        degree[c2 - 'a']++;
+                    }
+                    break;
                 }
             }
         }
 
+        Deque<Character> q = new ArrayDeque<>();
         StringBuilder sb = new StringBuilder();
-        Deque<Integer> q = new ArrayDeque<>();
+        int cnt = 0;
         for (int i = 0; i < 26; i++) {
-            if (degree[i] == 0) q.add(i);
-        }
-
-        while (!q.isEmpty()) {
-            int node = q.poll();
-            sb.append((char) (node + 'a'));
-            for (int nei :
-                    graph.get(node)) {
-                if (--degree[nei] == 0)
-                    q.add(nei);
+            if (degree[i] == 0) {
+                q.add((char) (i + 'a'));
+            }
+            if (degree[i] != -1) {
+                cnt++;
             }
         }
 
-        for (int x :
-                degree) {
-            if (x > 0) return "";
+        while (!q.isEmpty()) {
+            char c = q.poll();
+            cnt--;
+            sb.append(c);
+            if (map.containsKey(c)) {
+                for (char nei :
+                        map.get(c)) {
+                    if (degree[nei - 'a']-- == 1) {
+                        q.add(nei);
+                    }
+                }
+            }
         }
-
-        return sb.reverse().toString();
-    }
-
-    private boolean validate(String word, String prev, int i) {
-        if (prev.charAt(i) == word.charAt(i)) return false;
-        if (i == 0) return true;
-        for (int j = 0; j < i; j++) {
-            if (prev.charAt(j) != word.charAt(j)) return false;
-        }
-        return true;
+        return cnt == 0 ? sb.toString() : "";
     }
 }

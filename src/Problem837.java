@@ -1,3 +1,6 @@
+import java.util.Map;
+import java.util.TreeMap;
+
 public class Problem837 {
     public double new21Game(int N, int K, int W) {
         if (K == 0 || K + W - 1 < N) return 1;
@@ -10,7 +13,6 @@ public class Problem837 {
             else res += dp[i];
             if (i >= W) sumW -= dp[i - W];
         }
-
         return res;
     }
 }
