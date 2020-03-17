@@ -1,5 +1,3 @@
-package Contest;
-
 public class Problem1090 {
     private void sort(int[] a, int[] b, int l, int r) {
         if (l >= r) return;
