@@ -1,3 +1,5 @@
+package Upto250;
+
 public class Problem233 {
     public int countDigitOne(int n) {
         int cnt = 0;

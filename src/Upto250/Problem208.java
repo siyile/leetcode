@@ -1,3 +1,5 @@
+package Upto250;
+
 public class Problem208 {
     class Trie {
         Node root;

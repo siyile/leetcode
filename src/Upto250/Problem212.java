@@ -1,3 +1,5 @@
+package Upto250;
+
 import java.util.*;
 
 public class Problem212 {

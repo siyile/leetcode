@@ -33,8 +33,8 @@ public class Problem1087 {
                 }
                 i++;
             }
-            for (int j = 0; j < choice.size(); j++) {
-                temp.append(choice.get(j));
+            for (Character character : choice) {
+                temp.append(character);
                 int len = temp.length();
                 bt(S, i + 1, ans, temp);
                 temp.delete(len - 1, temp.length());
