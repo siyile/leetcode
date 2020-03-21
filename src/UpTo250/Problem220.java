@@ -1,7 +1,5 @@
-package Upto250;
+package UpTo250;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
 

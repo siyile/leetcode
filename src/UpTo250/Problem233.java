@@ -1,4 +1,4 @@
-package Upto250;
+package UpTo250;
 
 public class Problem233 {
     public int countDigitOne(int n) {

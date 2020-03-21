@@ -1,4 +1,4 @@
-package Upto250;
+package UpTo250;
 
 import java.util.*;
 

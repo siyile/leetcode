@@ -1,4 +1,4 @@
-package Upto250;
+package UpTo250;
 
 public class Problem245 {
     public int shortestWordDistance(String[] words, String word1, String word2) {

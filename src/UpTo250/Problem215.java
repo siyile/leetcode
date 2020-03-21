@@ -1,4 +1,4 @@
-package Upto250;
+package UpTo250;
 
 public class Problem215 {
     public static void main(String[] args) {

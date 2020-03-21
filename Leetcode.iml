@@ -5,6 +5,12 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/src/UpTo100" />
+      <excludeFolder url="file://$MODULE_DIR$/src/UpTo150" />
+      <excludeFolder url="file://$MODULE_DIR$/src/UpTo200" />
+      <excludeFolder url="file://$MODULE_DIR$/src/UpTo250" />
+      <excludeFolder url="file://$MODULE_DIR$/src/UpTo300" />
+      <excludeFolder url="file://$MODULE_DIR$/src/UpTo50" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

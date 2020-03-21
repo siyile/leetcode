@@ -1,4 +1,4 @@
-package Upto250;
+package UpTo250;
 
 public class Problem201 {
     public int rangeBitwiseAnd(int m, int n) {
