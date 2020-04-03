@@ -1,7 +1,7 @@
 import java.util.List;
 
 public class Problem364 {
-    interface NestedInteger {
+    private interface NestedInteger {
         public Integer getInteger();
         public void setInteger(int value);
         public void add(NestedInteger ni);
