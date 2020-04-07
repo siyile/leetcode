@@ -40,7 +40,6 @@ public class Problem980 {
 
     private boolean check(int x, int y, int[][] grid) {
         int m = grid.length, n = grid[0].length;
-        if (x < 0 || y < 0 || x >= m || y >= n || grid[x][y] == -1) return false;
-        return true;
+        return x >= 0 && y >= 0 && x < m && y < n && grid[x][y] != -1;
     }
 }

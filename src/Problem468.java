@@ -43,9 +43,7 @@ public class Problem468 {
         }
         int v = Integer.parseInt(str);
         if (v >= 0 && v <= 255)
-            if (v != 0 && str.startsWith("0") || v == 0 && str.length() > 1)
-                return false;
-            else return true;
+            return (v == 0 || !str.startsWith("0")) && (v != 0 || str.length() <= 1);
         else return false;
     }
 

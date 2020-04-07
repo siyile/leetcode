@@ -9,7 +9,7 @@ public class Problem1096 {
 
     public List<String> braceExpansionII(String e) {
         if (e.length() < 2)
-            return Arrays.asList(new String[]{e});
+            return Arrays.asList(e);
         if (e.charAt(0) == '{') {
             int counter = 1;
             int i = 1;

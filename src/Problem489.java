@@ -38,13 +38,13 @@ public class Problem489 {
     }
 
     interface Robot {
-        public boolean move();
+        boolean move();
 
-        public void turnLeft();
+        void turnLeft();
 
-        public void turnRight();
+        void turnRight();
 
-        public void clean();
+        void clean();
     }
 
     private class Pair<F, S> {

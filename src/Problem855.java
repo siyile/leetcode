@@ -24,7 +24,7 @@ public class Problem855 {
                 }
             }
 
-            Interval(){};
+            Interval(){}
 
             @Override
             public int compareTo(Interval o2) {

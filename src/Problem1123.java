@@ -18,7 +18,6 @@ public class Problem1123 {
         TreeNode right = lca(node.right, d + 1, t);
         if (left != null && right != null) return node;
         if (left != null) return left;
-        if (right != null) return right;
-        return null;
+        return right;
     }
 }

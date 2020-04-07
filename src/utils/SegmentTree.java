@@ -5,12 +5,12 @@ package utils;
 // query and update
 class SegmentTree
 {
-    int st[]; // The array that stores segment tree nodes
+    int[] st; // The array that stores segment tree nodes
 
     /* Constructor to construct segment tree from given array. This
        constructor  allocates memory for segment tree and calls
        constructSTUtil() to  fill the allocated memory */
-    SegmentTree(int arr[], int n)
+    SegmentTree(int[] arr, int n)
     {
         // Allocate memory for segment tree
         //Height of segment tree
@@ -80,7 +80,7 @@ class SegmentTree
 
     // The function to update a value in input array and segment tree.
     // It uses updateValueUtil() to update the value in segment tree
-    void updateValue(int arr[], int n, int i, int new_val)
+    void updateValue(int[] arr, int n, int i, int new_val)
     {
         // Check for erroneous input index
         if (i < 0 || i > n - 1) {
@@ -112,7 +112,7 @@ class SegmentTree
 
     // A recursive function that constructs Segment Tree for array[ss..se].
     // si is index of current node in segment tree st
-    int constructSTUtil(int arr[], int ss, int se, int si)
+    int constructSTUtil(int[] arr, int ss, int se, int si)
     {
         // If there is one element in array, store it in current node of
         // segment tree and return
@@ -130,9 +130,9 @@ class SegmentTree
     }
 
     // Driver program to test above functions
-    public static void main(String args[])
+    public static void main(String[] args)
     {
-        int arr[] = {1, 3, 5, 7, 9, 11};
+        int[] arr = {1, 3, 5, 7, 9, 11};
         int n = arr.length;
         SegmentTree  tree = new SegmentTree(arr, n);
 

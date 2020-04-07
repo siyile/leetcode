@@ -12,4 +12,4 @@ public class Node {
         val = _val;
         neighbors = _neighbors;
     }
-};
+}

@@ -11,7 +11,7 @@ public class Problem428 {
             val = _val;
             children = _children;
         }
-    };
+    }
 
     private class Codec {
 
