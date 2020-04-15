@@ -1,3 +1,5 @@
+package UpTo450;
+
 public class Problem420 {
     public int strongPasswordChecker(String s) {
         int res = 0, a = 1, A = 1, d = 1;

@@ -1,3 +1,5 @@
+package UpTo450;
+
 public class Problem410 {
     public int splitArray2(int[] nums, int m) {
         int[][] memo = new int[nums.length + 1][m + 1];

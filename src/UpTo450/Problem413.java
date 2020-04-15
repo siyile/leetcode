@@ -1,3 +1,5 @@
+package UpTo450;
+
 public class Problem413 {
     public int numberOfArithmeticSlices(int[] A) {
         if (A.length < 3) return 0;
