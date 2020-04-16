@@ -5,3 +5,4 @@ src/B.java
 src/C.java
 src/D.java
 .DS_Store
+*.json
