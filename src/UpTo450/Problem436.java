@@ -1,3 +1,7 @@
+package UpTo450;
+
+import java.util.TreeMap;
+
 class Problem436 {
     public int[] findRightInterval(int[][] intervals) {
         TreeMap<Integer, Integer> map = new TreeMap<>();
