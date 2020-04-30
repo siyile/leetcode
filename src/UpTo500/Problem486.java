@@ -1,3 +1,5 @@
+package UpTo500;
+
 public class Problem486 {
     public boolean PredictTheWinner2(int[] nums) {
         return winner(nums, 0, nums.length - 1, 1) >= 0;

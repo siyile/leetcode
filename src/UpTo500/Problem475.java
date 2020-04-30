@@ -1,3 +1,5 @@
+package UpTo500;
+
 import java.util.Arrays;
 
 public class Problem475 {
