@@ -1,5 +1,5 @@
 class Solution:
-    def findLUSlength(self, strs: List[str]) -> int:
+    def findLUSlength(self, strs) -> int:
         # is s2 a sub seq of s1
         def isSubSeq(s1, s2):
             if len(s2) > len(s1):
@@ -16,3 +16,9 @@ class Solution:
                 return len(s1)
         return -1
 
+if __name__ == "__main__":
+    s1 = [1, 2, 3]
+    s2 = [4, 5, 6]
+    for i, x in enumerate(s1):
+        for each in (not x == y for j, y in enumerate(s2) if i != j):
+            print(each)
