@@ -1,3 +1,5 @@
+package UpTo550;
+
 public class Problem529 {
     public char[][] updateBoard(char[][] board, int[] click) {
         int m = board.length;

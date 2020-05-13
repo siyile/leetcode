@@ -15,6 +15,7 @@
       <excludeFolder url="file://$MODULE_DIR$/src/UpTo450" />
       <excludeFolder url="file://$MODULE_DIR$/src/UpTo50" />
       <excludeFolder url="file://$MODULE_DIR$/src/UpTo500" />
+      <excludeFolder url="file://$MODULE_DIR$/src/UpTo550" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

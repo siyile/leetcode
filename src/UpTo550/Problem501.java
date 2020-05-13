@@ -1,3 +1,5 @@
+package UpTo550;
+
 import utils.TreeNode;
 
 public class Problem501 {
