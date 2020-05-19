@@ -1,3 +1,5 @@
+package UpTo600;
+
 public class Problem567 {
     public boolean checkInclusion(String s1, String s2) {
         int[] cnt = new int[128];

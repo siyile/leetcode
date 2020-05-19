@@ -1,3 +1,5 @@
+package UpTo600;
+
 import java.util.HashMap;
 import java.util.Map;
 

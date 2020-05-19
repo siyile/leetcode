@@ -1,3 +1,5 @@
+package UpTo600;
+
 public class Problem552 {
     public int checkRecord(int n) {
         int MODULE = 1_000_000_007;

@@ -1,3 +1,5 @@
+package UpTo600;
+
 public class Problem583 {
     public static void main(String[] args) {
         Problem583 p = new Problem583();

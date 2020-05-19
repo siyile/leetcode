@@ -1,3 +1,5 @@
+package UpTo600;
+
 import java.util.ArrayDeque;
 import java.util.Deque;
 
