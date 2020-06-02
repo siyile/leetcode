@@ -1,5 +1,3 @@
-package UpTo50;
-
 import javafx.util.Pair;
 
 import java.util.HashSet;
