@@ -10,3 +10,6 @@ def prime(number):
         if isPrime:
             primes.append(pr)
     return primes
+
+def bitcount(n):
+    return bin(n).count("1")

@@ -1,5 +1,4 @@
 class disjoint_set:
-    
     def __init__(self, n):
         self.rank = [0] * n
         self.size = [1] * n
@@ -25,10 +24,10 @@ class disjoint_set:
                 self.rank[y] += 1
         self.max = max(self.max, self.size[x], self.size[y])
     
-    def size(self):
+    def group(self):
         s = set()
         for x in self.parent:
-            s.add(x)
+            s.add(self.find(x))
         return len(s)
     
     def get_max(self):
